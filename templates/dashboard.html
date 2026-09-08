@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="dashboard container">
+    <div class="hero glass">
+        <div>
+            <span class="eyebrow">ShadowNet / Learning Hub</span>
+            <h1>Choose your coding path.</h1>
+            <p>Start from zero knowledge, build to semi-pro, then unlock professional notes when you are ready.</p>
+        </div>
+        <div class="hero-badge"><span>2017</span><small>Founded</small></div>
+    </div>
+
+    <div class="section-heading"><div><span class="eyebrow">Languages</span><h2>Build with the stack you prefer.</h2></div><span class="topic-count">{{ languages|length }} paths</span></div>
+
+    <div class="language-grid">
+    {% for slug, lang in languages.items() %}
+      <a class="language-card glass" href="{{ url_for('language', slug=slug) }}">
+        <div class="language-top"><span class="lang-icon {{ lang.color }}">{{ lang.icon }}</span><span class="arrow">↗</span></div>
+        <h3>{{ lang.name }}</h3>
+        <p>{{ lang.description }}</p>
+        <div class="level-pills"><span>Beginner</span><span>Intermediate</span><span>Semi-pro</span></div>
+      </a>
+    {% endfor %}
+    </div>
+
+    <section class="assistant-strip glass">
+      <div class="robot-orb">◈</div>
+      <div><span class="eyebrow">AI coding assistant</span><h2>Stuck on a concept? Ask ShadowBot.</h2><p>Use the assistant inside the workspace for quick explanations and study direction.</p></div>
+      <button class="primary-button compact" data-open-assistant>Open assistant <span>↗</span></button>
+    </section>
+</section>
+
+<div class="assistant-modal" id="assistantModal" aria-hidden="true">
+  <div class="assistant-window glass">
+    <div class="assistant-header"><div><span class="eyebrow">ShadowBot</span><h3>AI coding assistant</h3></div><button class="close-modal" data-close-assistant>×</button></div>
+    <div class="assistant-messages" id="assistantMessages"><div class="bot-message">Hi {{ current_user['username'] }}. Tell me the language and the coding problem you are working on.</div></div>
+    <form class="assistant-form" id="assistantForm"><input id="assistantInput" maxlength="2000" placeholder="Ask a coding question..."><button class="primary-button compact" type="submit">Send</button></form>
+  </div>
+</div>
+{% endblock %}

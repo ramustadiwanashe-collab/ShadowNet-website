@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="welcome-page" data-welcome-loader>
+    <div class="welcome-panel glass">
+        <div class="loader-ring"><span></span></div>
+        <span class="eyebrow">ShadowNet online</span>
+        <h1>Welcome, {{ current_user['username'] }}.</h1>
+        <p>Preparing your coding workspace.</p>
+        <div class="loading-track"><span></span></div>
+        <small>Opening dashboard in <strong id="countdown">5</strong>s</small>
+    </div>
+</section>
+<script>
+  window.SHADOWNET_WELCOME_SECONDS = 5;
+  window.SHADOWNET_WELCOME_REDIRECT = {{ url_for('dashboard')|tojson }};
+</script>
+{% endblock %}
