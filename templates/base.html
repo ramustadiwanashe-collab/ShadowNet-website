@@ -1,53 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ShadowNet, a coding learning platform for Python, HTML, CSS, JavaScript, C++, Java, SQL and Linux.">
-    <title>{{ title or 'ShadowNet' }}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="ShadowNet - Code. Build. Advance."
+    >
+
+    <meta name="theme-color" content="#070b1f">
+
+    <title>
+        {% block title %}ShadowNet{% endblock %}
+    </title>
+
+    <!-- ShadowNet CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app.css') }}"
+    >
+
+    {% block head %}{% endblock %}
 </head>
+
 <body>
-<div class="bg-grid"></div>
-<header class="topbar">
-    <a class="brand" href="{{ url_for('dashboard') if current_user else url_for('login') }}">
-        <span class="brand-mark">S</span>
-        <span><strong>ShadowNet</strong><small>CODE. BUILD. ADVANCE.</small></span>
-    </a>
-    <nav class="nav-links">
-        {% if current_user %}
-            <a href="{{ url_for('dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('privacy') }}">Privacy</a>
-            <form method="post" action="{{ url_for('logout') }}" class="inline-form">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button class="nav-button" type="submit">Sign out</button>
-            </form>
-        {% else %}
-            <a href="{{ url_for('privacy') }}">Privacy</a>
-            <a href="{{ url_for('terms') }}">Terms</a>
-        {% endif %}
-    </nav>
-</header>
-<main>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="flash-stack container narrow">
-        {% for category, message in messages %}
-          <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
-</main>
-<footer class="site-footer">
-    <div>© 2017 ShadowNet. All rights reserved.</div>
-    <div>Built for the future of technology.</div>
-    <div class="footer-links"><a href="{{ url_for('privacy') }}">Privacy</a><a href="{{ url_for('terms') }}">Terms & Conditions</a></div>
-</footer>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    <!-- Background effects -->
+    <div class="site-background" aria-hidden="true">
+        <div class="grid-overlay"></div>
+        <div class="glow glow-one"></div>
+        <div class="glow glow-two"></div>
+    </div>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="nav-container">
+
+            <a href="{{ url_for('index') }}" class="brand">
+                <span class="brand-mark">S</span>
+                <span class="brand-text">
+                    ShadowNet
+                    <small>CODE. BUILD. ADVANCE.</small>
+                </span>
+            </a>
+
+            <nav class="main-nav">
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Sign in</a>
+                    <a href="{{ url_for('register') }}">Create account</a>
+                {% endif %}
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site-main">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div>
+            <strong>ShadowNet</strong>
+            <span>Since 2017</span>
+        </div>
+
+        <div class="footer-links">
+            <a href="{{ url_for('legal', page='privacy') }}">Privacy</a>
+            <a href="{{ url_for('legal', page='terms') }}">Terms</a>
+        </div>
+    </footer>
+
+    <!-- ShadowNet JavaScript -->
+    <script
+        src="{{ url_for('static', filename='js/app.js') }}"
+        defer
+    ></script>
+
+    {% block scripts %}{% endblock %}
+
 </body>
-</html>
+                </html>
