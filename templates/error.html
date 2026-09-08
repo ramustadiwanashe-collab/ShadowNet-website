@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="error-page container"><div class="glass error-card"><span class="eyebrow">ShadowNet</span><h1>{{ code }}</h1><p>{{ message }}</p><a class="primary-button" href="{{ url_for('dashboard') if current_user else url_for('login') }}">Go back <span>↗</span></a></div></section>
+{% endblock %}

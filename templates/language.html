@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="language-page container">
+  <div class="language-hero glass">
+    <div class="language-hero-icon {{ language.color }}">{{ language.icon }}</div>
+    <div><span class="eyebrow">Learning path</span><h1>{{ language.name }}</h1><p>{{ language.description }}</p></div>
+    <a class="secondary-button compact" href="{{ url_for('dashboard') }}">← Dashboard</a>
+  </div>
+
+  <div class="progress-banner glass"><div><span class="eyebrow">Your path</span><h3>Zero knowledge → Intermediate → Semi-pro → Professional</h3></div><div class="progress-line"><span></span></div></div>
+
+  <div class="study-hint glass"><span class="study-icon">✦</span><div><strong>Every topic now has notes.</strong><p>Tap any unlocked topic to open its explanation, key points, example and practice task.</p></div></div>
+
+  <div class="topic-columns">
+    <section class="topic-card glass"><div class="topic-header"><span class="level-number">01</span><div><span class="eyebrow">Start here</span><h2>Beginner</h2></div></div>{% for topic in topic_data.beginner %}<button class="topic-row topic-button" type="button" data-level="beginner" data-topic-index="{{ loop.index0 }}"><span>✓</span><span>{{ topic }}</span><b>Read →</b></button>{% endfor %}</section>
+    <section class="topic-card glass"><div class="topic-header"><span class="level-number">02</span><div><span class="eyebrow">Build skill</span><h2>Intermediate</h2></div></div>{% for topic in topic_data.intermediate %}<button class="topic-row topic-button" type="button" data-level="intermediate" data-topic-index="{{ loop.index0 }}"><span>✓</span><span>{{ topic }}</span><b>Read →</b></button>{% endfor %}</section>
+    <section class="topic-card glass"><div class="topic-header"><span class="level-number">03</span><div><span class="eyebrow">Semi-pro notes</span><h2>Semi-pro</h2></div></div>{% for topic in topic_data.semipro %}<button class="topic-row topic-button" type="button" data-level="semipro" data-topic-index="{{ loop.index0 }}"><span>✓</span><span>{{ topic }}</span><b>Read →</b></button>{% endfor %}</section>
+    <section class="topic-card premium-card glass"><div class="topic-header"><span class="level-number premium">★</span><div><span class="eyebrow">Premium notes</span><h2>Professional</h2></div></div><div class="premium-lock"><div class="lock-icon">⌑</div><h3>Unlock professional notes</h3><p>Professional notes are premium content. Purchase access to continue beyond the semi-pro level.</p><button class="primary-button compact" type="button" onclick="alert('Connect your payment provider here, such as Stripe, then activate the user’s premium_access record after a verified payment.')">Purchase Premium <span>↗</span></button></div>{% for topic in topic_data.premium %}<div class="topic-row locked"><span>🔒</span><span>{{ topic }}</span></div>{% endfor %}</section>
+  </div>
+
+  <section class="practice-panel glass"><div><span class="eyebrow">Practice zone</span><h2>Ask ShadowBot while you study.</h2><p>Use the assistant for explanations, debugging guidance and study planning.</p></div><button class="primary-button" data-open-assistant>Launch ShadowBot <span>↗</span></button></section>
+</section>
+
+<div class="notes-modal" id="notesModal" aria-hidden="true">
+  <div class="notes-window glass">
+    <div class="notes-header"><div><span class="eyebrow" id="noteLevel">Study note</span><h3 id="noteTitle">Topic</h3></div><button class="close-modal" data-close-notes>×</button></div>
+    <div class="notes-body">
+      <p class="note-summary" id="noteSummary"></p>
+      <h4>Key points</h4><ul id="notePoints"></ul>
+      <h4>Example</h4><pre><code id="noteExample"></code></pre>
+      <h4>Practice</h4><p id="notePractice"></p>
+    </div>
+    <div class="notes-footer"><button class="secondary-button compact" data-close-notes>Close</button><button class="primary-button compact" data-note-ask>Ask ShadowBot ↗</button></div>
+  </div>
+</div>
+
+<div class="assistant-modal" id="assistantModal" aria-hidden="true">
+  <div class="assistant-window glass">
+    <div class="assistant-header"><div><span class="eyebrow">ShadowBot</span><h3>AI coding assistant</h3></div><button class="close-modal" data-close-assistant>×</button></div>
+    <div class="assistant-messages" id="assistantMessages"><div class="bot-message">Ask me about {{ language.name }} and I will give you a quick learning direction.</div></div>
+    <form class="assistant-form" id="assistantForm"><input id="assistantInput" maxlength="2000" placeholder="Ask about {{ language.name }}..."><button class="primary-button compact" type="submit">Send</button></form>
+  </div>
+</div>
+<script>
+  window.SHADOWNET_NOTES = {{ notes|tojson }};
+  window.SHADOWNET_LANGUAGE = {{ language.name|tojson }};
+</script>
+{% endblock %}

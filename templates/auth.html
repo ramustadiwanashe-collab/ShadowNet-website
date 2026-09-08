@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-page">
+    <div class="auth-visual">
+        <div class="orb orb-a"></div><div class="orb orb-b"></div>
+        <div class="terminal-card">
+            <div class="terminal-top"><span></span><span></span><span></span><b>shadownet@linux:~</b></div>
+            <div class="terminal-body">
+                <p><span class="prompt">$</span> whoami</p>
+                <p class="terminal-accent">shadow_user</p>
+                <p><span class="prompt">$</span> learn --level=all</p>
+                <p class="terminal-accent">Python · C++ · HTML · JS · SQL · Linux</p>
+                <p><span class="prompt">$</span> build --future</p>
+                <p class="terminal-dim">ready_for_next_step</p>
+            </div>
+        </div>
+        <div class="visual-copy">
+            <span class="eyebrow">Since 2017</span>
+            <h1>Enter the coding network.</h1>
+            <p>Learn from zero knowledge to semi-pro, then unlock premium professional notes.</p>
+        </div>
+    </div>
+    <div class="auth-card glass">
+        <div class="logo-circle">S</div>
+        {% if mode == 'login' %}
+          <span class="eyebrow">ShadowNet access</span>
+          <h2>Welcome back</h2>
+          <p class="muted">Sign in to continue your coding journey.</p>
+          <form method="post" class="auth-form" autocomplete="on">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>Email address<input type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+            <label>Password<div class="password-wrap"><input type="password" name="password" required autocomplete="current-password" placeholder="Your password"><button type="button" class="toggle-password" aria-label="Show password">◉</button></div></label>
+            <div class="auth-row"><label class="check"><input type="checkbox" name="remember"> <span>Remember me</span></label><a href="#" onclick="return false">Forgot password?</a></div>
+            <button class="primary-button" type="submit">Sign in <span>↗</span></button>
+          </form>
+          <div class="divider">or</div>
+          <a class="secondary-button" href="{{ url_for('register') }}">Create new account</a>
+        {% else %}
+          <span class="eyebrow">Create your access</span>
+          <h2>Join ShadowNet</h2>
+          <p class="muted">Create a free account and start learning.</p>
+          <form method="post" class="auth-form" autocomplete="on">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>Username<input type="text" name="username" required minlength="2" maxlength="50" autocomplete="username" placeholder="Your display name"></label>
+            <label>Email address<input type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+            <label>Password<input type="password" name="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></label>
+            <label>Confirm password<input type="password" name="confirm_password" required minlength="8" autocomplete="new-password" placeholder="Repeat your password"></label>
+            <label class="check terms-check"><input type="checkbox" required> <span>I agree to the <a href="{{ url_for('terms') }}">Terms & Conditions</a> and <a href="{{ url_for('privacy') }}">Privacy Policy</a>.</span></label>
+            <button class="primary-button" type="submit">Create account <span>↗</span></button>
+          </form>
+          <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+        {% endif %}
+        <p class="secure-line">⌾ Passwords are hashed. Sessions use secure cookies.</p>
+    </div>
+</section>
+{% endblock %}
